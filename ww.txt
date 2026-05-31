@@ -1,0 +1,164 @@
+
+SQL*Plus: Release 19.0.0.0.0 - Production on Sun May 10 09:56:19 2026
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+Enter user-name: sys as sysasdba
+SP2-0306: Invalid option.
+Usage: CONN[ECT] [{logon|/|proxy} [AS {SYSDBA|SYSOPER|SYSASM|SYSBACKUP|SYSDG|SYSKM|SYSRAC}] [edition=value]]
+where <logon> ::= <username>[/<password>][@<connect_identifier>]
+      <proxy> ::= <proxyuser>[<username>][/<password>][@<connect_identifier>]
+Enter user-name: sys as sysdba
+Enter password:
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+
+SQL> desc personal_details
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FIRST_NAME                                         VARCHAR2(10)
+ MIDDLE_NAME                                        VARCHAR2(12)
+ LAST_NAME                                          VARCHAR2(10)
+ DATE_OF_DATE                                       DATE
+ GENDER                                             CHAR(1)
+ NATIONAL_ID                                        VARCHAR2(10)
+ CONTACT_NO                                         VARCHAR2(15)
+
+SQL> SELECT personal_details.national_id, gender
+  2  FROM personal_details
+  3  INNER JOIN marks
+  4  ON personal_details.national_id = marks.national_id;
+
+no rows selected
+
+SQL> SELECT * FROM personal_details;
+
+FIRST_NAME MIDDLE_NAME  LAST_NAME  DATE_OF_D G NATIONAL_I CONTACT_NO
+---------- ------------ ---------- --------- - ---------- ---------------
+Sita       Devi         Thapa      25-NOV-01 F NID654321  9801000000
+
+SQL> desc contact_details
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CONTACT_NUMBER                                     NUMBER(10)
+ EMAIL_ID                                           VARCHAR2(20)
+
+SQL> SELECT personal_details.first_name,
+  2         personal_details.national_id,
+  3         contact_details.contact_number,
+  4         contact_details.email_id
+  5  FROM personal_details
+  6  RIGHT JOIN contact_details
+  7  ON personal_details.contact_no = contact_details.contact_number;
+
+no rows selected
+
+SQL> SELECT personal_details.first_name,
+  2         personal_details.contact_no,
+  3         contact_details.email_id
+  4  FROM personal_details
+  5  RIGHT JOIN contact_details
+  6  ON personal_details.contact_no = contact_details.contact_number;
+
+no rows selected
+
+SQL> SELECT personal_details.first_name,
+  2         personal_details.national_id,
+  3         contact_details.contact_number,
+  4         contact_details.email_id
+  5  FROM personal_details
+  6  LEFT JOIN contact_details
+  7  ON personal_details.contact_no = contact_details.contact_number;
+
+FIRST_NAME NATIONAL_I CONTACT_NUMBER EMAIL_ID
+---------- ---------- -------------- --------------------
+Sita       NID654321
+
+SQL> SELECT personal_details.first_name,last_name
+  2  FROM personal_details
+  3  JOIN contact_details
+  4  ON personal_details.contact_number=contact_details.contact_number;
+ON personal_details.contact_number=contact_details.contact_number
+   *
+ERROR at line 4:
+ORA-00904: "PERSONAL_DETAILS"."CONTACT_NUMBER": invalid identifier
+
+
+SQL> SELECT personal_details.first_name,
+  2         personal_details.last_name
+  3  FROM personal_details
+  4  JOIN contact_details
+  5  ON personal_details.contact_no = contact_details.contact_number;
+
+no rows selected
+
+SQL> SELECT perosnal_details.first_name,personal_details.last_name
+  2  FROM contact_details
+  3  RIGHT JOIN personal_details
+  4  ON personal_details.first_name=contact_details.contact_number;
+SELECT perosnal_details.first_name,personal_details.last_name
+       *
+ERROR at line 1:
+ORA-00904: "PEROSNAL_DETAILS"."FIRST_NAME": invalid identifier
+
+
+SQL> SELECT personal_details.first_name,
+  2         personal_details.last_name
+  3  FROM contact_details
+  4  RIGHT JOIN personal_details
+  5  ON personal_details.contact_no = contact_details.contact_number;
+
+FIRST_NAME LAST_NAME
+---------- ----------
+Sita       Thapa
+
+SQL> dsce academic_details
+SP2-0734: unknown command beginning "dsce acade..." - rest of line ignored.
+SQL> desc academic_details
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COLLEGE_NAME                                       VARCHAR2(10)
+ STUDENT_ID                                         VARCHAR2(10)
+ GRADE                                              VARCHAR2(10)
+ EMAIL_ID                                           VARCHAR2(10)
+
+SQL> SELECT personal_details.gender,personal_details.date_of_birth
+  2  FROM contact_details
+  3  FULL OUTER JOIN academic_details
+  4  ON contact_details.email_id=academic_details.email_id;
+SELECT personal_details.gender,personal_details.date_of_birth
+                               *
+ERROR at line 1:
+ORA-00904: "PERSONAL_DETAILS"."DATE_OF_BIRTH": invalid identifier
+
+
+SQL> SELECT personal_details.gender,
+  2         personal_details.date_of_date
+  3  FROM personal_details
+  4  FULL OUTER JOIN academic_details
+  5  ON personal_details.national_id = academic_details.student_id;
+
+G DATE_OF_D
+- ---------
+
+F 25-NOV-01
+
+SQL> SELECT personal_details.gender,
+  2         personal_details.date_of_date,
+  3         contact_details.email_id
+  4  FROM personal_details
+  5  FULL OUTER JOIN contact_details
+  6  ON personal_details.contact_no = contact_details.contact_number;
+
+G DATE_OF_D EMAIL_ID
+- --------- --------------------
+F 25-NOV-01
+
+SQL> SELECT personal_details.gender, personal_details.date_of_birth
+  2  FROM contact_details
+  3  FULL OUTER JOIN academic_details
+  4
+SQL>

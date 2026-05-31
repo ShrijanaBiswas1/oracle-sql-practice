@@ -75,9 +75,28 @@ SQL> DROP TABLE sites;
 
 Table dropped.
 
+
 SQL> CREATE TABLE sites (
   2  site_id     NUMBER(6),
   3  address     varray_type_name
+  4  );
+
+Table created.
+SQL> CREATE OR REPLACE TYPE student_object AS OBJECT (
+  2  name          VARCHAR2(50),
+  3  email         VARCHAR2(50),
+  4  age           NUMBER
+  5  );
+  6  /
+
+Type created.
+SQL> CREATE OR REPLACE TYPE student_arr AS VARRAY(5) OF student_object;
+  2  /
+
+Type created.
+SQL> CREATE TABLE student_table (
+  2  id  NUMBER,
+  3  students student_arr
   4  );
 
 Table created.
